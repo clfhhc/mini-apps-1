@@ -6,6 +6,7 @@ app.boardDOM = document.getElementById('board');
 app.squaresDOM = Array.from(document.getElementsByClassName('square'));
 app.buttonDOM = document.getElementsByClassName('reset-button')[0];
 
+
 //board Setup (model)
 app.win = {
     X: 0,
@@ -18,7 +19,6 @@ app.next={
     O: 'X'
 };
 app.board = {
-    empty: Array(9).fill(''),
     X: Array(9).fill(0),
     O: Array(9).fill(0),
 };
@@ -43,10 +43,15 @@ app.getWinner = function(boardArray) {
     })
 }
 
+//detect full board
+app.isFullBoard = function(){
+    return app.squaresDOM.every((node) => node.innerHTML);
+}
+
 //reset board
 app.resetBoard = function() {
-    app.board.empty.forEach((value,index) => {
-        app.squaresDOM[index].innerHTML = value;
+    app.squaresDOM.forEach((node) => {
+        node.innerHTML = '';
     });
     app.board.X = Array(9).fill(0);
     app.board.O = Array(9).fill(0);
@@ -66,19 +71,25 @@ app.buttonDOM.addEventListener('click', function(event){
 //add click event listener to the board
 app.boardDOM.addEventListener('click', function(event) {
     if (!app.game) {
-        resetBoard();
+        app.resetBoard();
     } else {
-        let squareDOM = event.target.tagName.match(/span/i) ? event.target : event.target.getElementsByClassName('square')[0]; 
+        let squareDOM = event.target; 
         if (squareDOM.innerHTML === '') {
             squareDOM.innerHTML = app.current;
             app.board[app.current][squareDOM.id] = 1;
             if (app.getWinner(app.board[app.current])) {
-                app.bannerDOM.innerHTML = `Winner is player ${app.current}`;
+                app.bannerDOM.innerHTML = `Winner is player ${app.current}!`;
                 app.win[app.current]++;
                 app.game = false;
                 return;
             }
             app.current = app.next[app.current];
+            if (app.isFullBoard()) {
+                app.bannerDOM.innerHTML = `Draw!`;
+                app.game = false;
+            } else {
+                app.bannerDOM.innerHTML = `Next step: player ${app.current}`;
+            }
         }
     }
     
