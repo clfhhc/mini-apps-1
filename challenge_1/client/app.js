@@ -1,23 +1,23 @@
 let app = {};
 
-//find the appropriate DOM elements
-app.bannerDOM = document.getElementsByClassName('banner')[0];
-app.boardDOM = document.getElementById('board');
-app.squaresDOM = Array.from(document.getElementsByClassName('square'));
-app.buttonDOM = document.getElementsByClassName('reset-button')[0];
-app.pointsDOM = document.getElementsByClassName('points')[0];
-
 //board Setup (model)
 app.win = {
     X: 0,
     O: 0
 };
+
+app.alias = {
+    X:'',
+    O:'',
+}
+
 app.current = 'X';
 app.game = 'false';
 app.next={
     X: 'O',
     O: 'X'
 };
+
 app.board = {
     X: Array(9).fill(0),
     O: Array(9).fill(0),
@@ -42,56 +42,4 @@ app.getWinner = function(boardArray) {
     })
 }
 
-//detect full board
-app.isFullBoard = function(){
-    return app.squaresDOM.every((node) => node.innerHTML);
-}
-
-//reset board
-app.resetBoard = function() {
-    app.squaresDOM.forEach((node) => {
-        node.innerHTML = '';
-    });
-    app.board.X = Array(9).fill(0);
-    app.board.O = Array(9).fill(0);
-    app.bannerDOM.innerText = `Game Start with player ${app.current}`;
-    app.game = true;
-}
-
-
-//Controller: 
-//add click event listener to restart button
-app.buttonDOM.addEventListener('click', function(event){
-    event.preventDefault();
-    app.current = 'X';
-    app.resetBoard();
-})
-
-//add click event listener to the board
-app.boardDOM.addEventListener('click', function(event) {
-    if (!app.game) {
-        app.resetBoard();
-    } else {
-        let squareDOM = event.target; 
-        if (squareDOM.innerHTML === '') {
-            squareDOM.innerHTML = app.current;
-            app.board[app.current][squareDOM.id] = 1;
-            if (app.getWinner(app.board[app.current])) {
-                app.bannerDOM.innerHTML = `Winner is player ${app.current}!`;
-                app.win[app.current]++;
-                app.pointsDOM.innerHTML = `X : O = ${app.win.X} : ${app.win.O}`;
-                app.game = false;
-                return;
-            }
-            app.current = app.next[app.current];
-            if (app.isFullBoard()) {
-                app.bannerDOM.innerHTML = `Draw!`;
-                app.game = false;
-            } else {
-                app.bannerDOM.innerHTML = `Next step: player ${app.current}`;
-            }
-        }
-    }
-    
-})
 
