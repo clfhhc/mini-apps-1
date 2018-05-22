@@ -23,34 +23,37 @@ app.board = {
     O: Array(9).fill(0),
 };
 
-app.rotationLeft = function(boardArray) {
-    let order = [0, 1, 2, 5, 8, 7, 6, 3];
-    let temp = boardArray.slice(0,2);
-    for (let i = 0; i < order.length ; i++) {
-        if (i === order.length-1) {
-            boardArray[order[i]] = temp[1];
-        } else if (i === order.length-2) {
-            boardArray[order[i]] = temp[0];
-        } else {
-            boardArray[order[i]] = boardArray[order[i+2]];
-        }
-    }
+app.rotation = {
+    stay: undefined,
+    left: function(boardArray) {
+            let order = [0, 1, 2, 5, 8, 7, 6, 3];
+            let temp = boardArray.slice(0,2);
+            for (let i = 0; i < order.length ; i++) {
+                if (i === order.length-1) {
+                    boardArray[order[i]] = temp[1];
+                } else if (i === order.length-2) {
+                    boardArray[order[i]] = temp[0];
+                } else {
+                    boardArray[order[i]] = boardArray[order[i+2]];
+                }
+            }
+        },
+    right: function(boardArray) {
+                let order = [0, 1, 2, 5, 8, 7, 6, 3];
+                console.log(boardArray);
+                let temp = [boardArray[6],boardArray[3]].slice();
+                for (let i = order.length - 1; i >= 0 ; i--) {
+                    if (i === 0) {
+                        boardArray[order[i]] = temp[0];
+                    } else if (i === 1) {
+                        boardArray[order[i]] = temp[1];
+                    } else {
+                        boardArray[order[i]] = boardArray[order[i - 2]];
+                    }
+                }
+                console.log(boardArray);
+            }
 }
-
-app.rotationRight = function(boardArray) {
-    let order = [0, 1, 2, 5, 8, 7, 6, 3];
-    let temp = boardArray.slice(-2,);
-    for (let i = order.length - 1; i >= 0 ; i--) {
-        if (i === 0) {
-            boardArray[order[i]] = temp[1];
-        } else if (i === 1) {
-            boardArray[order[i]] = temp[0];
-        } else {
-            boardArray[order[i]] = boardArray[order[i - 2]];
-        }
-    }
-}
-
 
 
 //determine winner

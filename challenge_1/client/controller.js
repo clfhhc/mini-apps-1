@@ -11,10 +11,17 @@ if (boolean) {
 }
 
 //add click event listener to restart button
-app.buttonDOM.addEventListener('click', function(event){
+app.resetButtonDOM.addEventListener('click', function(event){
     event.preventDefault();
     app.current = 'X';
     app.resetBoard();
+})
+
+//add click event listener to rotation button
+app.rotationButtonDOM.addEventListener('click', function(event){
+    event.preventDefault();
+    let currentChoice = Object.keys(app.rotation).indexOf(app.rotationButtonDOM.innerHTML)
+    app.rotationButtonDOM.innerHTML = Object.keys(app.rotation)[currentChoice ===2 ? 0 : currentChoice + 1];
 })
 
 //add click event listener to the board
@@ -39,9 +46,13 @@ app.boardDOM.addEventListener('click', function(event) {
                 app.game = false;
             } else {
                 app.bannerDOM.innerHTML = `Next step: player ${app.current}`;
-                app.rotationLeft(app.board.X);
-                app.rotationLeft(app.board.O);
-                app.readBoardStatus();
+                let rotationFunction = app.rotation[app.rotationButtonDOM.innerHTML];
+                if (rotationFunction) {
+                    rotationFunction(app.board.X);
+                    rotationFunction(app.board.O);
+                    app.readBoardStatus();
+                }
+                
             }
         }
     }

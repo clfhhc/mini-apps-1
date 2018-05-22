@@ -4,7 +4,8 @@
 app.bannerDOM = document.getElementsByClassName('banner')[0];
 app.boardDOM = document.getElementById('board');
 app.squaresDOM = Array.from(document.getElementsByClassName('square'));
-app.buttonDOM = document.getElementsByClassName('reset-button')[0];
+app.resetButtonDOM = document.getElementsByClassName('reset-button')[0];
+app.rotationButtonDOM = document.getElementsByClassName('rotation-button')[0];
 app.pointsDOM = document.getElementsByClassName('points')[0];
 
 //detect full board
