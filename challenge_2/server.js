@@ -27,32 +27,36 @@ const readFileAsync = function(filePath, options) {
 //process sales_report.json
 let processSalesReportJson = {};
 
-processSalesReportJson.properties = ['id','firstName', 'lastName', 'county', 'city', 'role', 'sales'];
+processSalesReportJson.properties = ['id', 'parentId', 'firstName', 'lastName', 'county', 'city', 'role', 'sales'];
 processSalesReportJson.fileContent = processSalesReportJson.properties.join(',') + '\n';
 
-processSalesReportJson.process = function(json) {
+processSalesReportJson.process = function(json, baseId, parentIndex = '') {
     let tempArray = [];
     processSalesReportJson.properties.forEach((property, index) => {
-        tempArray[index] = json[property] ? json[property].toString() : '';
-    })
+        if (index === 0) {
+            tempArray[index] = baseId[0];
+            baseId[0]++;
+        } else if (index === 1) {
+            tempArray[index] = parentIndex;
+        } else {
+            tempArray[index] = json[property] ? json[property].toString() : '';
+        }
+    });
     processSalesReportJson.processedArray.push(tempArray);
     if (json.children && json.children.length) {
         json.children.forEach((child) => {
-            processSalesReportJson.process(child);
+            processSalesReportJson.process(child, baseId, tempArray[0]);
         })
     }
 };
 
 processSalesReportJson.compileCSVFile = function(json){
     processSalesReportJson.processedArray = [];
-    processSalesReportJson.process(json);
-    let baseId = (processSalesReportJson.fileContent.match(/\n/g) || []).length - 1;
-    console.log(baseId);
+    let baseId = [(processSalesReportJson.fileContent.match(/\n/g) || []).length - 1];
+    processSalesReportJson.process(json, baseId);
     processSalesReportJson.tempContent = processSalesReportJson.processedArray.reduce((content, row, index) => {
-        row[0] = baseId + index;
         return content += row.join(',')+('\n');
     },'')
-    console.log(processSalesReportJson.tempContent);
     processSalesReportJson.fileContent += processSalesReportJson.tempContent;
 }
 
@@ -75,7 +79,7 @@ app.use(express.static(path.join(__dirname, 'client')));
 app.options('/', (req,res) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
     res.statusCode = 200;
     res.end();
 })
