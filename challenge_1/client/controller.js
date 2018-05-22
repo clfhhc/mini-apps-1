@@ -39,6 +39,9 @@ app.boardDOM.addEventListener('click', function(event) {
                 app.game = false;
             } else {
                 app.bannerDOM.innerHTML = `Next step: player ${app.current}`;
+                app.rotationLeft(app.board.X);
+                app.rotationLeft(app.board.O);
+                app.readBoardStatus();
             }
         }
     }

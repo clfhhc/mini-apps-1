@@ -22,3 +22,10 @@ app.resetBoard = function() {
     app.bannerDOM.innerText = `Game Start with player ${app.current}`;
     app.game = true;
 }
+
+//read board
+app.readBoardStatus = function() {
+    app.squaresDOM.forEach((node, index) => {
+        node.innerHTML = (app.board.X[index] && 'X') || (app.board.O[index] && 'O') || '';
+    })
+}
