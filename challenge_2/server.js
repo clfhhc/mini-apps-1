@@ -2,10 +2,66 @@ const express = require('express');
 const path = require('path');
 const http = require('http');
 const bodyParser = require('body-parser');
+const fs = require('fs');
 
+
+//wrapping asynchronous functions in Promise
+const writeFileAsync = function(filePath, fileContent, options) {
+    return new Promise(function(resolve, reject){
+        fs.writeFile(filePath, fileContent, options, function(err){
+            if (err) reject(err);
+            resolve();
+        })
+    })
+}
+
+const readFileAsync = function(filePath, options) {
+    return new Promise(function(resolve, reject){
+        fs.readFile(filePath, options, function(err, data){
+            if (err) reject(err);
+            resolve(data);
+        })
+    })
+}
+
+//process sales_report.json
+let processSalesReportJson = {};
+
+processSalesReportJson.properties = ['id','firstName', 'lastName', 'county', 'city', 'role', 'sales'];
+processSalesReportJson.fileContent = processSalesReportJson.properties.join(',') + '\n';
+
+processSalesReportJson.process = function(json) {
+    let tempArray = [];
+    processSalesReportJson.properties.forEach((property, index) => {
+        tempArray[index] = json[property] ? json[property].toString() : '';
+    })
+    processSalesReportJson.processedArray.push(tempArray);
+    if (json.children && json.children.length) {
+        json.children.forEach((child) => {
+            processSalesReportJson.process(child);
+        })
+    }
+};
+
+processSalesReportJson.compileCSVFile = function(json){
+    processSalesReportJson.processedArray = [];
+    processSalesReportJson.process(json);
+    let baseId = (processSalesReportJson.fileContent.match(/\n/g) || []).length - 1;
+    console.log(baseId);
+    processSalesReportJson.tempContent = processSalesReportJson.processedArray.reduce((content, row, index) => {
+        row[0] = baseId + index;
+        return content += row.join(',')+('\n');
+    },'')
+    console.log(processSalesReportJson.tempContent);
+    processSalesReportJson.fileContent += processSalesReportJson.tempContent;
+}
+
+
+//express.js app
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -31,10 +87,26 @@ app.get('/', (req,res) => {
 })
 
 app.post('/', (req,res)=> {
-    console.log('post "/":', req.body)
-    res.statusCode = 302;
+    console.log('post "/":')
+    res.statusCode = 200;
     res.end();
 })
+
+app.get('/csv', (req,res)=> {
+    console.log('get "/csv":');
+    res.statusCode = 200;
+    res.end(processSalesReportJson.fileContent);
+})
+
+app.post('/csv', (req,res)=> {
+    console.log('post "/csv":')
+    processSalesReportJson.compileCSVFile(req.body);
+    res.statusCode = 201;
+    res.send(processSalesReportJson.tempContent);
+    res.end();
+})
+
+app.get('/favicon.ico', (req, res) => res.status(204));
 
 let server = http.createServer(app);
 
