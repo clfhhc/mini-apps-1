@@ -5,7 +5,7 @@ app.bannerDOM = document.getElementsByClassName('banner')[0];
 app.boardDOM = document.getElementById('board');
 app.squaresDOM = Array.from(document.getElementsByClassName('square'));
 app.buttonDOM = document.getElementsByClassName('reset-button')[0];
-
+app.pointsDOM = document.getElementsByClassName('points')[0];
 
 //board Setup (model)
 app.win = {
@@ -22,7 +22,6 @@ app.board = {
     X: Array(9).fill(0),
     O: Array(9).fill(0),
 };
-
 
 //determine winner
 app.winningArrays = [
@@ -80,6 +79,7 @@ app.boardDOM.addEventListener('click', function(event) {
             if (app.getWinner(app.board[app.current])) {
                 app.bannerDOM.innerHTML = `Winner is player ${app.current}!`;
                 app.win[app.current]++;
+                app.pointsDOM.innerHTML = `X : O = ${app.win.X} : ${app.win.O}`;
                 app.game = false;
                 return;
             }
