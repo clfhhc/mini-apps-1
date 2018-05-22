@@ -27,6 +27,19 @@ table {
     margin-top: 20px;
     border-collapse: collapse;
     border: 2px solid black;
+    
+
+}
+
+.rotation {
+    animation-duration: 800ms;
+    animation-name: rotation;
+    animation-direction: reverse;
+}
+
+@keyframes rotation {
+    from {transform: rotate(0deg);}
+    to {transform: rotate(90deg);}
 }
 
 tr.row {

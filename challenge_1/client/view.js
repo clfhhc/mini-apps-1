@@ -21,6 +21,7 @@ app.resetBoard = function() {
     app.board.X = Array(9).fill(0);
     app.board.O = Array(9).fill(0);
     app.bannerDOM.innerText = `Game Start with player ${app.current}`;
+    app.boardDOM.classList.add('rotation');
     app.game = true;
 }
 

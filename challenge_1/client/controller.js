@@ -38,12 +38,14 @@ app.boardDOM.addEventListener('click', function(event) {
                 app.win[app.current]++;
                 app.pointsDOM.innerHTML = app.text + ` = ${app.win.X} : ${app.win.O}`;
                 app.game = false;
+                app.boardDOM.classList.remove('rotation');
                 return;
             }
             app.current = app.next[app.current];
             if (app.isFullBoard()) {
                 app.bannerDOM.innerHTML = `Draw!`;
                 app.game = false;
+                app.boardDOM.classList.remove('rotation');
             } else {
                 app.bannerDOM.innerHTML = `Next step: player ${app.current}`;
                 let rotationFunction = app.rotation[app.rotationButtonDOM.innerHTML];
