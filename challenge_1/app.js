@@ -1,17 +1,23 @@
+let app = {};
+
 //find the appropriate DOM elements
-let bannerDOM = document.getElementsByClassName('banner')[0];
-let boardDOM = document.getElementById('board');
-let squaresDOM = Array.from(document.getElementsByClassName('square'));
-let buttonDOM = document.getElementsByClassName('reset-button')[0];
+app.bannerDOM = document.getElementsByClassName('banner')[0];
+app.boardDOM = document.getElementById('board');
+app.squaresDOM = Array.from(document.getElementsByClassName('square'));
+app.buttonDOM = document.getElementsByClassName('reset-button')[0];
 
 //board Setup (model)
-let current = 'X';
-let game = 'false';
-let next={
+app.win = {
+    X: 0,
+    O: 0
+};
+app.current = 'X';
+app.game = 'false';
+app.next={
     X: 'O',
     O: 'X'
 };
-let board = {
+app.board = {
     empty: Array(9).fill(''),
     X: Array(9).fill(0),
     O: Array(9).fill(0),
@@ -19,7 +25,7 @@ let board = {
 
 
 //determine winner
-let winningArrays = [
+app.winningArrays = [
     [0, 1, 2],
     [3, 4, 5],
     [6, 7, 8],
@@ -30,50 +36,49 @@ let winningArrays = [
     [2, 4, 6]
 ];
 
-let getWinner = function(boardArray) {
-    return winningArrays.some((winningArray) => {
+app.getWinner = function(boardArray) {
+    return app.winningArrays.some((winningArray) => {
         let total = winningArray.reduce((sum, squareIndex) => sum + boardArray[squareIndex], 0);
         return total === 3;
     })
 }
 
 //reset board
-let resetBoard = function() {
-    board.empty.forEach((value,index) => {
-        squaresDOM[index].innerHTML = value;
+app.resetBoard = function() {
+    app.board.empty.forEach((value,index) => {
+        app.squaresDOM[index].innerHTML = value;
     });
-    board.X = Array(9).fill(0);
-    board.O = Array(9).fill(0);
-    bannerDOM.innerText = `Game Start with player ${current}`;
-    game = true;
+    app.board.X = Array(9).fill(0);
+    app.board.O = Array(9).fill(0);
+    app.bannerDOM.innerText = `Game Start with player ${app.current}`;
+    app.game = true;
 }
 
 
 //Controller: 
 //add click event listener to restart button
-buttonDOM.addEventListener('click', function(event){
+app.buttonDOM.addEventListener('click', function(event){
     event.preventDefault();
-    current = 'X';
-    resetBoard();
-
+    app.current = 'X';
+    app.resetBoard();
 })
 
 //add click event listener to the board
-boardDOM.addEventListener('click', function(event) {
-    console.log(game);
-    if (!game) {
+app.boardDOM.addEventListener('click', function(event) {
+    if (!app.game) {
         resetBoard();
     } else {
         let squareDOM = event.target.tagName.match(/span/i) ? event.target : event.target.getElementsByClassName('square')[0]; 
         if (squareDOM.innerHTML === '') {
-            squareDOM.innerHTML = current;
-            board[current][squareDOM.id] = 1;
-            if (getWinner(board[current])) {
-                bannerDOM.innerHTML = `Winner is player ${current}`;
-                game = false;
+            squareDOM.innerHTML = app.current;
+            app.board[app.current][squareDOM.id] = 1;
+            if (app.getWinner(app.board[app.current])) {
+                app.bannerDOM.innerHTML = `Winner is player ${app.current}`;
+                app.win[app.current]++;
+                app.game = false;
                 return;
             }
-            current = next[current];
+            app.current = app.next[app.current];
         }
     }
     
