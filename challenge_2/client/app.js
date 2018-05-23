@@ -31,7 +31,7 @@ app.send = function(data){
     // }).done((data)=>{
     //     app.handleIncrementalResponse(data)})
     fetch(app.csvUrl, {
-        body: JSON.stringify(data),
+        body: data,
         headers: {
             'Accept': 'text/plain',
             'Content-Type': 'application/json'
@@ -72,7 +72,7 @@ app.filter = function(data) {
     // }).done((data)=>{
     //     app.handleFullResponse(data)})
     fetch(app.filterUrl, {
-        body: JSON.stringify(data),
+        body: data,
         headers: {
             'Accept': 'text/plain',
             'Content-Type': 'application/json'
@@ -89,7 +89,7 @@ $(document).ready(function(){
         event.preventDefault();
         let json = $("textarea#textarea").val();
         if (json) {
-            json = JSON.parse(json);
+            // json = JSON.parse(json);
             app.send(json);
         }
     })
@@ -98,6 +98,7 @@ $(document).ready(function(){
         event.preventDefault();
         let filterString = $("input#filter-input").val();
         json = {filter: filterString};
+        json = JSON.stringify(json);
         app.filter(json);
     })
 })
