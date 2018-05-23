@@ -2,7 +2,7 @@ class Form1 extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            account: '',
+            username: '',
             email: '',
             password: '',
         }
@@ -17,7 +17,7 @@ class Form1 extends React.Component {
                     <fieldset>
                         <legend>Create Account:</legend>
                         Name:<br/>
-                        <input type="text" name="account" placeholder="Input Account Name" onChange={this.handleFormChange} value={this.state.account}/><br/>
+                        <input type="text" name="username" placeholder="Input Account Name" onChange={this.handleFormChange} value={this.state.username}/><br/>
                         Email:<br/>
                         <input type="email" name="email" placeholder="Input Email Address" onChange={this.handleFormChange} value={this.state.email}/><br/>
                         Password:<br/>
