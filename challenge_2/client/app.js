@@ -20,47 +20,67 @@ app.handleIncrementalResponse = function(data) {
 }
 
 app.send = function(data){
-    $.ajax({
-        url: app.csvUrl,
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(data),
-        error: function(err) {
-            console.log('err');
-        }
-    }).done((data)=>{
-        app.handleIncrementalResponse(data)})
-//     fetch(app.csvUrl, {
-//         body: JSON.stringify(data),
-//         headers: {
-//             'Accept': 'application/json',
-//             'Content-Type': 'application/json'
-//         },
-//         method: 'POST',
-//         mode: 'cors'
-//     }).then(response => console.log(response))
+    // $.ajax({
+    //     url: app.csvUrl,
+    //     type: 'POST',
+    //     contentType: 'application/json',
+    //     data: JSON.stringify(data),
+    //     error: function(err) {
+    //         console.log('err');
+    //     }
+    // }).done((data)=>{
+    //     app.handleIncrementalResponse(data)})
+    fetch(app.csvUrl, {
+        body: JSON.stringify(data),
+        headers: {
+            'Accept': 'text/plain',
+            'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        mode: 'cors'
+    }).then(response => response.text())
+    .then(app.handleIncrementalResponse)
 }
 
 app.get = function(){
-    $.ajax({
-        url: app.csvUrl,
-        type: 'GET',
-        contentType: 'text/plain',
-        success: app.handleFullResponse
-    })
+    // $.ajax({
+    //     url: app.csvUrl,
+    //     type: 'GET',
+    //     contentType: 'text/plain',
+    //     success: app.handleFullResponse
+    // })
+    fetch(app.csvUrl, {
+        headers: {
+            'Accept': 'text/plain',
+            'Content-Type': 'application/json'
+        },
+        method: 'GET',
+        mode: 'cors'
+    }).then(response => response.text())
+    .then(app.handleFullResponse)
 }
 
 app.filter = function(data) {
-    $.ajax({
-        url: app.filterUrl,
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(data),
-        error: function(err) {
-            console.log('err');
-        }
-    }).done((data)=>{
-        app.handleFullResponse(data)})
+    // $.ajax({
+    //     url: app.filterUrl,
+    //     type: 'POST',
+    //     contentType: 'application/json',
+    //     data: JSON.stringify(data),
+    //     error: function(err) {
+    //         console.log('err');
+    //     }
+    // }).done((data)=>{
+    //     app.handleFullResponse(data)})
+    fetch(app.filterUrl, {
+        body: JSON.stringify(data),
+        headers: {
+            'Accept': 'text/plain',
+            'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        mode: 'cors'
+    }).then(response => response.text())
+    .then(app.handleFullResponse)
 }
 
 $(document).ready(function(){
