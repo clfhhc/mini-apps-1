@@ -28,6 +28,7 @@ const readFileAsync = function(filePath, options) {
 let processSalesReportJson = {};
 
 processSalesReportJson.properties = ['id', 'parentId', 'firstName', 'lastName', 'county', 'city', 'role', 'sales'];
+processSalesReportJson.processedArrays = [];
 processSalesReportJson.fileContent = processSalesReportJson.properties.join(',') + '\n';
 
 processSalesReportJson.process = function(json, baseId, parentIndex = '') {
@@ -52,14 +53,42 @@ processSalesReportJson.process = function(json, baseId, parentIndex = '') {
 
 processSalesReportJson.compileCSVFile = function(json){
     processSalesReportJson.processedArray = [];
-    let baseId = [(processSalesReportJson.fileContent.match(/\n/g) || []).length - 1];
+    let baseId = [processSalesReportJson.processedArrays.length];
     processSalesReportJson.process(json, baseId);
+    processSalesReportJson.processedArrays.push(...processSalesReportJson.processedArray)
     processSalesReportJson.tempContent = processSalesReportJson.processedArray.reduce((content, row, index) => {
         return content += row.join(',')+('\n');
     },'')
     processSalesReportJson.fileContent += processSalesReportJson.tempContent;
 }
 
+processSalesReportJson.filter = function(filterString) {
+    processSalesReportJson.filteredContent = processSalesReportJson.properties.join(',') + '\n';
+    let filter = new RegExp(filterString, 'i');
+    let id = {};
+    let index = 0;
+    let tempString;
+    processSalesReportJson.processedArrays.forEach((row) => {
+        if (row[1] !== '') {
+            if (id[row[1]] === undefined) {
+                return;
+            }
+            tempString = `${index},${id[row[1]]}`;
+        } else {
+            tempString = `${index},`;
+        }
+        for (let i = 2; i < processSalesReportJson.properties.length; i++) {
+            if (filter.test(row[i])) {
+                return;
+            }
+            tempString += ',' + row[i]
+        }
+        processSalesReportJson.filteredContent += tempString + '\n';
+        id[row[0]] = index;
+        index++;
+    });
+
+}
 
 //express.js app
 const app = express();
@@ -107,6 +136,18 @@ app.post('/csv', (req,res)=> {
     processSalesReportJson.compileCSVFile(req.body);
     res.statusCode = 201;
     res.send(processSalesReportJson.tempContent);
+    res.end();
+})
+
+app.post('/filter', (req,res)=> {
+    console.log('post "/filter":')
+    res.statusCode = 201;
+    if (req.body.filter) {
+        processSalesReportJson.filter(req.body.filter);
+        res.send(processSalesReportJson.filteredContent);
+    } else {
+        res.send(processSalesReportJson.fileContent);
+    }
     res.end();
 })
 

@@ -9,6 +9,18 @@
         <meta name="description" content="description">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="app.js"></script>
+        <style>
+            table {
+                border-collapse: collapse;
+            }
+            table td {
+                border: 1px solid lightgrey;
+            }
+            textarea {
+                width: 400px;
+                height: 300px;;
+            }
+        </style>
     </head>
     <body>
         <header>
@@ -19,10 +31,14 @@
                 <textarea name="json" form="userInput" placeholder="Enter your json object here" id="textarea" ></textarea>
                 <input type="submit" value="submit" class="submit" />
             </form>
+            <form id="userFilter">
+                <input type="text" name="filter" placeholder="filter string" id="filter-input" />
+                <input type="submit" value="filter" class="submit" />
+            </form>
             <div>
                 <h2>Generated CSV Report:</h2>
-                <p class="responsed-csv">
-                </p>
+                <table class="responsed-csv">
+                </table>
             </div>
         </main>
     </body>
