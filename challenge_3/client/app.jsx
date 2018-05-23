@@ -6,6 +6,8 @@ class Form1 extends React.Component {
             email: '',
             password: '',
         }
+
+        this.handleFormChange = this.props.handleFormChange.bind(this)
     }
 
     render() {
@@ -15,11 +17,11 @@ class Form1 extends React.Component {
                     <fieldset>
                         <legend>Create Account:</legend>
                         Name:<br/>
-                        <input type="text" name="account" placeholder="Input Account Name" onChange={this.props.handleFormChange} /><br/>
+                        <input type="text" name="account" placeholder="Input Account Name" onChange={this.handleFormChange} value={this.state.account}/><br/>
                         Email:<br/>
-                        <input type="email" name="email" placeholder="Input Email Address" onChange={this.props.handleFormChange} /><br/>
+                        <input type="email" name="email" placeholder="Input Email Address" onChange={this.handleFormChange} value={this.state.email}/><br/>
                         Password:<br/>
-                        <input type="password" name="password" placeholder="Input Password" onChange={this.props.handleFormChange} /><br/>
+                        <input type="password" name="password" placeholder="Input Password" onChange={this.handleFormChange} value={this.state.password}/><br/>
                         <button onClick={this.props.handleBackwardClick} >Back</button>
                         <input type="submit" value="Next" onClick={this.props.handleCheckoutClick}/>
                     </fieldset>
@@ -41,6 +43,8 @@ class Form2 extends React.Component {
             'zip-code': '',
             'tel-no': '',
         }
+
+        this.handleFormChange = this.props.handleFormChange.bind(this)
     }
 
     render() {
@@ -51,17 +55,17 @@ class Form2 extends React.Component {
                         <legend>Shipment Information:</legend>
                         Address:<br/>
                         Line 1:
-                        <input type="text" name="street-address-1" placeholder="Street Address" onChange={this.props.handleFormChange} /><br/>
+                        <input type="text" name="street-address-1" placeholder="Street Address" onChange={this.handleFormChange} value={this.state['street-address-1']}/><br/>
                         Line 2:
-                        <input type="text" name="street-address-2" placeholder="Street Address" onChange={this.props.handleFormChange} /><br/>
+                        <input type="text" name="street-address-2" placeholder="Street Address" onChange={this.handleFormChange} value={this.state['street-address-2']}/><br/>
                         City:
-                        <input type="text" name="city" placeholder="City" onChange={this.props.handleFormChange} />
+                        <input type="text" name="city" placeholder="City" onChange={this.handleFormChange} value={this.state.city}/>
                         State:
-                        <input type="text" name="state" placeholder="State" pattern="[A-Za-z]{2}" title="Two Letter State Code" onChange={this.props.handleFormChange} />
+                        <input type="text" name="state" placeholder="State" pattern="[A-Za-z]{2}" title="Two Letter State Code" onChange={this.handleFormChange} value={this.state.state}/>
                         Zip code:
-                        <input type="text" name="zip-code" pattern="[0-9]{5}" placeholder="Zip Code" title="Five Digit Zip Code" onChange={this.props.handleFormChange} /><br/>
+                        <input type="text" name="zip-code" pattern="[0-9]{5}" placeholder="Zip Code" title="Five Digit Zip Code" onChange={this.handleFormChange} value={this.state['zip-code']}/><br/>
                         Phone Number:
-                        <input type="tel" name="tel-no" placeholder="Telephone Number" onChange={this.props.handleFormChange} /><br/>
+                        <input type="tel" name="tel-no" placeholder="Telephone Number" onChange={this.handleFormChange} value={this.state['tel-no']}/><br/>
                         <button onClick={this.props.handleBackwardClick} >Back</button>
                         <input type="submit" value="Next" onClick={this.props.handleCheckoutClick}/>
                     </fieldset>
@@ -81,6 +85,8 @@ class Form3 extends React.Component {
             cvv: '',
             'billing-zip-code': ''
         }
+
+        this.handleFormChange = this.props.handleFormChange.bind(this)
     }
 
     render() {
@@ -91,13 +97,13 @@ class Form3 extends React.Component {
                         <legend>Billing Information:</legend>
                         Credit Card:<br/>
                         Number:
-                        <input type="text" name="credit-card-no" placeholder="Street Address" onChange={this.props.handleFormChange} /><br/>
+                        <input type="text" name="credit-card-no" placeholder="Street Address" onChange={this.handleFormChange} value={this.state['credit-card-no']}/><br/>
                         Expiry Date:
-                        <input type="text" name="expiry-date" pattern="[0-9]{6}" placeholder="MMYYYY" title="Six Digit Month and Year" onChange={this.props.handleFormChange} />
+                        <input type="text" name="expiry-date" pattern="[0-9]{6}" placeholder="MMYYYY" title="Six Digit Month and Year" onChange={this.handleFormChange} value={this.state['expiry-date']}/>
                         CVV:
-                        <input type="text" name="cvv" pattern="[0-9]{3}" placeholder="XXX" title="Three Digit CVV" onChange={this.props.handleFormChange} /><br/>
+                        <input type="text" name="cvv" pattern="[0-9]{3}" placeholder="XXX" title="Three Digit CVV" onChange={this.handleFormChange} value={this.state.cvv}/><br/>
                         Billing Zip code:
-                        <input type="text" name="billing-zip-code" pattern="[0-9]{5}" placeholder="Billing Zip Code" title="Five Digit Zip Code" onChange={this.props.handleFormChange} /><br/>
+                        <input type="text" name="billing-zip-code" pattern="[0-9]{5}" placeholder="Billing Zip Code" title="Five Digit Zip Code" onChange={this.handleFormChange} value={this.state['billing-zip-code']}/><br/>
                         <button onClick={this.props.handleBackwardClick} >Back</button>
                         <input type="submit" value="Purchase" onClick={this.props.handleCheckoutClick}/>
                     </fieldset>
@@ -125,7 +131,7 @@ class App extends React.Component {
 
         this.handleCheckoutClick = this.handleCheckoutClick.bind(this);
         this.handleBackwardClick = this.handleBackwardClick.bind(this);
-        this.handleFormChange = this.handleFormChange.bind(this);
+        // this.handleFormChange = this.handleFormChange.bind(this);
 
         this.checkoutForm = {
             0: <div>Ready to checkout?</div>,
@@ -164,8 +170,9 @@ class App extends React.Component {
     handleFormChange(event){
         // console.log(event.target.name, event.target.value);
         this.setState({
-
+            [event.target.name]: event.target.value
         })
+        console.log(this.state);
     }
 
     render() {
