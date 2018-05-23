@@ -1,6 +1,6 @@
 //setting global variables and Methods
 
-let fieldNames = [
+const fieldNames = [
     'username', 
     'email', 
     'password', 
@@ -16,11 +16,27 @@ let fieldNames = [
     'billing-zip-code'
 ] 
 
-let emptyState = fieldNames.reduce((obj, key) => {
+const emptyState = fieldNames.reduce((obj, key) => {
     obj[key] =''
     return obj;
 }, {})
 
+const postFormInputsUrl = 'http://127.0.0.1:3000/form';
+
+const postFormInputs = function(subState) {
+    fetch(postFormInputsUrl, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+            'Accept': 'text/plain',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(subState),
+    }).then((response) => {
+        console.log('something')
+        console.log(response.text());
+    })
+}
 
 //creating React Components:
 class Form1 extends React.Component {
@@ -161,9 +177,10 @@ class App extends React.Component {
     }
 
     getSubState(checkoutStatus){
-        let subState = {};
+        let subState;
         let emptyKey;
         if (this.sendFormFields[checkoutStatus]) {
+            subState = {};
             this.sendFormFields[checkoutStatus].forEach((key) => {
                 subState[key] = this.state[key];
                 if (key !== fieldNames[4]) {
@@ -182,7 +199,8 @@ class App extends React.Component {
             alert(`${emptyKey} is not optional`);
             return;
         }
-
+        console.log(subState);
+        subState && postFormInputs(subState);
         this.setState(emptyState);
         if (this.state.checkoutStatus <= 3) {
             this.setState({
