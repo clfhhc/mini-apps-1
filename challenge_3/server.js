@@ -3,8 +3,8 @@ const bodyParser = require('body-parser');
 const http = require('http');
 const path = require('path');
 
+const CheckoutPurchase = require('./mongooseModel');
 
-let username = '';
 
 //set up the server;
 const app = express();

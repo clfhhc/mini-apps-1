@@ -60,8 +60,8 @@ class Form1 extends React.Component {
                         <input type="email" name={fieldNames[1]} placeholder="Input Email Address" onChange={this.props.handleFormChange} /><br/>
                         Password:<br/>
                         <input type="password" name={fieldNames[2]} placeholder="Input Password" onChange={this.props.handleFormChange} /><br/>
-                        <button onClick={this.props.handleBackwardClick} >Back</button>
                         <input type="submit" value="Next" onClick={this.props.handleCheckoutClick}/>
+                        <button onClick={this.props.handleBackwardClick} >Back</button>
                     </fieldset>
                 </form>
             </div>
@@ -98,8 +98,8 @@ class Form2 extends React.Component {
                         <input type="text" name={fieldNames[7]} pattern="[0-9]{5}" placeholder="Zip Code" title="Five Digit Zip Code" onChange={this.props.handleFormChange} /><br/>
                         Phone Number:
                         <input type="tel" name={fieldNames[8]} placeholder="Telephone Number" onChange={this.props.handleFormChange} /><br/>
-                        <button onClick={this.props.handleBackwardClick} >Back</button>
                         <input type="submit" value="Next" onClick={this.props.handleCheckoutClick}/>
+                        <button onClick={this.props.handleBackwardClick} >Back</button>
                     </fieldset>
                 </form>
             </div>
@@ -132,8 +132,8 @@ class Form3 extends React.Component {
                         <input type="text" name={fieldNames[11]} pattern="[0-9]{3}" placeholder="XXX" title="Three Digit CVV" onChange={this.props.handleFormChange} /><br/>
                         Billing Zip code:
                         <input type="text" name={fieldNames[12]} pattern="[0-9]{5}" placeholder="Billing Zip Code" title="Five Digit Zip Code" onChange={this.props.handleFormChange} /><br/>
-                        <button onClick={this.props.handleBackwardClick} >Back</button>
                         <input type="submit" value="Purchase" onClick={this.props.handleCheckoutClick}/>
+                        <button onClick={this.props.handleBackwardClick} >Back</button>
                     </fieldset>
                 </form>
             </div>

@@ -6,7 +6,7 @@
   "scripts": {
     "test": "",
     "start": "nodemon server.js",
-    "babel-watch": "babel . --out-dir public --presets=env,react --ignore=node_modules,public,server.js --source-maps inline -w"
+    "babel-watch": "babel . --out-dir public --presets=env,react --ignore=node_modules,public,server.js,mongooseModel,mongooseConnection --source-maps inline -w"
   },
   "author": "David",
   "license": "MIT",
