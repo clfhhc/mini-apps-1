@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 //Create Schema and Model
 
 const CheckoutPurchaseSchema = new mongoose.Schema({
-    'userid': {type: String, required: true},
     'username' : {type: String, required: true}, 
     'email' : String, 
     'password' : String, 
@@ -14,7 +13,7 @@ const CheckoutPurchaseSchema = new mongoose.Schema({
     'zip-code' : Number,
     'tel-no' : String,
     'credit-card-no' : Number,
-    'expiry-date' : String,
+    'expiry-date' : Date,
     'cvv' : Number,
     'billing-zip-code' : Number
 });
