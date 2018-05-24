@@ -6,8 +6,6 @@ const path = require('path');
 //set up the database connection
 const dbUtil = require('./mongooseConnection'); //connection
 
-
-
 //set up the server;
 const app = express();
 app.use(bodyParser.urlencoded({extended: true}));
@@ -25,7 +23,6 @@ app.get('/react/react.development.js', (req, res) => {res.sendFile(path.join(__d
 app.get('/react-dom/react-dom.development.js', (req, res) => {res.sendFile(path.join(__dirname, "node_modules/react-dom/umd/react-dom.development.js"))});
 
 app.post('/form',(req, res)=>{
-    console.log(req.body);
     dbUtil.insertRecord(req.body)
     .then((record) => dbUtil.retrieveRecordByObjectId(record._id))
     .then((result) => {
@@ -35,11 +32,6 @@ app.post('/form',(req, res)=>{
     })
 })
 
-
-app.get('/id', (req, res) => {
-    res.statusCode = 200;
-    res.end(baseUserId.toString());
-})
 
 app.get('/favicon.ico', (req, res) => res.status(204));
 
